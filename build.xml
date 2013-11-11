@@ -66,7 +66,7 @@
 	<target name="dist">
 		<echo>Organizing everything into a single jar</echo>
 		<mkdir dir="${dist.dir}" />
-		<one-jar destfile="${dist.dir}/socket-server.jar">
+		<one-jar destfile="${dist.dir}/socket-server.jar" manifest="socket-server.mf">
 			<main>
 				<fileset dir="${bin.dir}"/>
 			</main>
