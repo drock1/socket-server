@@ -7,19 +7,20 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.drock.networking.messaging.handlers.BasicRequestHandler;
+import com.drock.networking.messaging.handlers.SampleRequestHandler;
 
 public class MessageHandlingSystem
 {
 	static Logger s_logger = Logger.getLogger(MessageHandlingSystem.class);
 	
-	private Map<Short, BasicRequestHandler<? extends NetworkRequestMessage,? extends NetworkRequestMessage>> m_handlers;
+	private Map<Short, BasicRequestHandler<? extends NetworkRequestMessage,? extends NetworkResponseMessage>> m_handlers;
 	
 	/**
 	 * CTOR
 	 */
 	public MessageHandlingSystem()
 	{
-		m_handlers = new HashMap<Short, BasicRequestHandler<? extends NetworkRequestMessage,? extends NetworkRequestMessage>>();
+		m_handlers = new HashMap<Short, BasicRequestHandler<? extends NetworkRequestMessage,? extends NetworkResponseMessage>>();
 	}
 	
 	/**
@@ -27,7 +28,7 @@ public class MessageHandlingSystem
 	 */
 	public void addDefaultHandlers()
 	{
-//		m_handlers.put(WrapperMessage.getMessageCode(), new SampleRequestHandler());
+		m_handlers.put(SampleRequestHandler.getMessageCode(), new SampleRequestHandler());
 	}
 
 	public WrapperMessage handleMessage(ByteBuffer rawData) 
@@ -46,6 +47,7 @@ public class MessageHandlingSystem
 		}
 		else
 		{
+			s_logger.warn("Unknown message type: " + message.messageType + " consider adding a handler for it");
 			return null;
 		}
 	}

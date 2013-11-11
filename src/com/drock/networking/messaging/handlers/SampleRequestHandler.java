@@ -10,9 +10,15 @@ public class SampleRequestHandler extends BasicRequestHandler<SampleRequest, Sam
 		super(SampleRequest.class);
 	}
 
+	public static Short getMessageCode()
+	{
+		return 1;
+	}
+	
 	@Override
 	public SampleResponse handleMessage(SampleRequest message) 
 	{	
+		//Do some processing / game logic here
 		return null;
 	}
 }
