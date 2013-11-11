@@ -52,6 +52,12 @@
 		<echo>Compiling sources</echo>
 		<javac srcdir="${src.dir}" destdir="${bin.dir}" classpathref="library-path" includeantruntime="false" debug="on" />
 		<echo>Compiled</echo>
+		
+		<echo>Copying configs</echo>
+		<copy todir="${bin.dir}">
+			<fileset dir="${res.dir}/config" />
+		</copy>
+		<echo>Finished</echo>
 	</target>
 	
 	<!-- ==============

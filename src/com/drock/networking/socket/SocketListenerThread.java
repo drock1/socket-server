@@ -4,12 +4,17 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * The socket listener listens for connections on a specified socket and spits
  * connections into a queue for workers to pickup.
  */
 public class SocketListenerThread implements Runnable
 {
+	static Logger s_logger = LogManager.getLogger(SocketListenerThread.class);
+	
 	private ServerSocket m_socket;
 	private ConcurrentLinkedQueue<Socket> m_queue;
 	
@@ -41,7 +46,7 @@ public class SocketListenerThread implements Runnable
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
+				s_logger.error("Error accepting socket connection:", e);
 				try
 				{
 					if (newConnection != null && newConnection.isClosed() == false)
@@ -49,7 +54,7 @@ public class SocketListenerThread implements Runnable
 				}
 				catch (Exception e2)
 				{
-					e2.printStackTrace();
+					s_logger.error("Error closing socket after a previous exception:" , e2);
 				}
 			}
 		}

@@ -4,10 +4,15 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.drock.networking.messaging.handlers.BasicRequestHandler;
 
 public class MessageHandlingSystem
 {
+	static Logger s_logger = LogManager.getLogger(MessageHandlingSystem.class);
+	
 	private Map<Short, BasicRequestHandler<? extends NetworkRequestMessage,? extends NetworkRequestMessage>> m_handlers;
 	
 	/**
@@ -31,10 +36,10 @@ public class MessageHandlingSystem
 		WrapperMessage message = new WrapperMessage();
 		message.deserializeFromByteBuffer(rawData);
 		
-		System.out.println("Version: " + message.version);
-		System.out.println("Message Type: " + message.messageType);
-		System.out.println("User ID: " + message.userID);
-		System.out.println("Payload: " + message.payload);
+		s_logger.debug("Version: " + message.version);
+		s_logger.debug("Message Type: " + message.messageType);
+		s_logger.debug("User ID: " + message.userID);
+		s_logger.debug("Payload: " + message.payload);
 		
 		if (m_handlers.containsKey(message.messageType))
 		{

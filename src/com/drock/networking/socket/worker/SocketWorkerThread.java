@@ -6,11 +6,16 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.drock.networking.messaging.MessageHandlingSystem;
 import com.drock.networking.messaging.WrapperMessage;
 
 public class SocketWorkerThread implements Runnable 
 {
+	static Logger s_logger = LogManager.getLogger(SocketWorkerThread.class);
+	
 	private ConcurrentLinkedQueue<Socket> m_socketQueue;
 	private MessageHandlingSystem m_handlers;
 	private boolean m_alive;
@@ -38,7 +43,7 @@ public class SocketWorkerThread implements Runnable
 				} 
 				catch (InterruptedException e) 
 				{
-					e.printStackTrace();
+					s_logger.warn("Worker thread sleep was interrupted...not really a big deal", e);
 				}
 			}
 			
@@ -48,7 +53,6 @@ public class SocketWorkerThread implements Runnable
 				InputStream socketInput = currentSocket.getInputStream();
 				if (socketInput.available() > 0)
 				{
-					
 					ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 					byte buffer[] = new byte[1024];
 					
@@ -60,7 +64,7 @@ public class SocketWorkerThread implements Runnable
 					ByteBuffer rawData = ByteBuffer.wrap(byteStream.toByteArray());
 					if (rawData.capacity() < 7)
 					{
-						//Invalid data
+						s_logger.error("Invalid network message: not enough bytes!");
 					}
 					else
 					{
@@ -72,7 +76,7 @@ public class SocketWorkerThread implements Runnable
 			}
 			catch (Exception e)
 			{
-				
+				s_logger.error("Error readying data from the socket", e);
 			}
 			finally
 			{
@@ -81,7 +85,6 @@ public class SocketWorkerThread implements Runnable
 					m_socketQueue.add(currentSocket);
 				}
 			}
-			
 		}
 	}
 	
