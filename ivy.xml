@@ -1,0 +1,17 @@
+<!-- ===============================================================================
+
+	This is the ivy module for Dunk Dreams Game Server
+
+================================================================================ -->
+
+<ivy-module version="2.0">
+	<info organisation="drock" module="socket-server" />
+	<dependencies>
+	
+		<!-- Logging -->
+		<dependency org="log4j"                name="log4j"                 rev="1.2.+" transitive="false" conf="*->default"/> 
+		
+		<exclude org="*" ext="*" type="source" />
+		<exclude org="*" ext="*" type="javadoc" />
+	</dependencies>
+</ivy-module>

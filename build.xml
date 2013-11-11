@@ -1,0 +1,74 @@
+<!-- ==================================================================================================================
+
+	Socket Server Build
+
+================================================================================================================== -->
+
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="socket-server" default="publish">
+
+	<property name="src.dir"   value="src" />
+	<property name="lib.dir"   value="lib" />
+	<property name="bin.dir"   value="bin" />
+	<property name="res.dir"   value="res" />
+	<property name="dist.dir"  value="dist" />
+	<property name="build.dir" value="build" />
+
+	<!-- One-Jar properties -->
+	<property name="one-jar.dist.dir" value="${build.dir}/one-jar" />
+	<import file="${one-jar.dist.dir}/one-jar-ant-task.xml" optional="true" />
+	
+	<path id="library-path">
+		<fileset dir="${lib.dir}" >
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<property environment="env" />
+
+	<ivy:settings file="${build.dir}/ivy_settings.xml" />
+
+	<!-- ==============
+		CLEAN TARGET
+	=================== -->
+	<target name="clean">
+		<echo>Cleaning</echo>
+		<delete dir="${lib.dir}"  />
+		<delete dir="${bin.dir}"  />
+		<delete dir="${dist.dir}" />
+		<echo>Done Cleaning</echo>
+	</target>
+
+	<!-- ==============
+		PUBLISH TARGET
+	=================== -->
+	<target name="publish">
+		<mkdir dir="${lib.dir}" />
+		<mkdir dir="${bin.dir}" />
+		
+		<echo>Getting dependencies</echo>
+		<ivy:retrieve />
+		<echo>Got them</echo>
+
+		<echo>Compiling sources</echo>
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" classpathref="library-path" includeantruntime="false" debug="on" />
+		<echo>Compiled</echo>
+	</target>
+	
+	<!-- ==============
+		DIST TARGET
+	=================== -->
+	<target name="dist">
+		<echo>Organizing everything into a single jar</echo>
+		<mkdir dir="${dist.dir}" />
+		<one-jar destfile="${dist.dir}/socket-server.jar">
+			<main>
+				<fileset dir="${bin.dir}"/>
+			</main>
+			<lib>
+				<fileset dir="${lib.dir}"/>
+			</lib>
+		</one-jar>
+		<echo>Finished</echo>
+	</target>
+
+</project>

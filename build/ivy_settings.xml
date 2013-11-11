@@ -1,0 +1,33 @@
+
+<ivysettings>
+	<settings defaultResolver="all"/>
+	<resolvers>
+
+		<!-- All resolvers -->
+
+		<!-- Maven resolvers -->
+		<ibiblio name="ibiblio" m2compatible="true" />
+		<ibiblio name="maven-restlet"   root="http://maven.restlet.org" 												  m2compatible="true" />
+		<ibiblio name="maven-couchbase" root="http://files.couchbase.com/maven2" 										  m2compatible="true" />
+		<ibiblio name="maven-jboss-3rd" root="http://repository.jboss.org/nexus/content/repositories/thirdparty-releases" m2compatible="true" />
+		<ibiblio name="maven-java-apns"	root="https://github.com/notnoop/m2-repo/raw/gh-pages"							  m2compatible="true" />
+		<ibiblio name="maven-gcm-java"  root="https://github.com/slorber/gcm-server-repository/raw/master/releases"	      m2compatible="true" />
+
+		<!-- Super depot -->
+		<packager name="roundup" buildRoot="${user.home}/.ivy2/packager/build" resourceCache="${user.home}/.ivy2/packager/cache">
+        	<ivy pattern="http://ivyroundup.googlecode.com/svn/trunk/repo/modules/[organisation]/[module]/[revision]/ivy.xml"/>
+        	<artifact pattern="http://ivyroundup.googlecode.com/svn/trunk/repo/modules/[organisation]/[module]/[revision]/packager.xml"/>
+    	</packager>
+
+		<!-- Resolver chain -->
+		<chain name="all">
+			<resolver ref="ibiblio" />
+			<resolver ref="maven-restlet" />
+			<resolver ref="maven-couchbase" />
+			<resolver ref="maven-jboss-3rd" />
+			<resolver ref="maven-java-apns" />
+			<resolver ref="maven-gcm-java" />
+			<resolver ref="roundup" />
+		</chain>	
+	</resolvers>
+</ivysettings>
