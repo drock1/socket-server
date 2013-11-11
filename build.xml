@@ -74,6 +74,11 @@
 				<fileset dir="${lib.dir}"/>
 			</lib>
 		</one-jar>
+		
+		<echo>Copying run script</echo>
+		<copy todir="${dist.dir}">
+			<fileset dir="${res.dir}/script" />
+		</copy>
 		<echo>Finished</echo>
 	</target>
 
