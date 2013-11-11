@@ -54,7 +54,7 @@ public class SocketWorkerThread extends Thread
 			try
 			{
 				InputStream socketInput = currentSocket.getInputStream();
-				if (socketInput.available() > 0)
+				if (socketInput.available() > 0) //So we aren't blocking our threads on empty sockets
 				{
 					ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 
