@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.log4j.Logger;
@@ -132,7 +133,23 @@ public class SocketServer
 	 */
 	public static void main(String [] args)
 	{
-		SocketServer server = new SocketServer(6969, 1, 8);
+		Properties serverProps = new Properties();
+		
+		try
+		{
+			serverProps.load(SocketServer.class.getClassLoader().getResourceAsStream("server.properties"));
+		}
+		catch (Exception e)
+		{
+			s_logger.error("Error loading properties file:", e);
+			serverProps.setProperty("port", "6969");
+			serverProps.setProperty("listeners", "1");
+			serverProps.setProperty("workers", "8");
+		}
+		
+		SocketServer server = new SocketServer(Integer.parseInt(serverProps.getProperty("port")),
+											   Integer.parseInt(serverProps.getProperty("listeners")),
+											   Integer.parseInt(serverProps.getProperty("workers")));
 		
 		while (server.isAlive())
 		{

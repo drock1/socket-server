@@ -83,6 +83,18 @@ public class SocketWorkerThread extends Thread
 			}
 			finally
 			{
+				if (currentSocket.isConnected() == false)
+				{
+					s_logger.debug("Client closed the connection. Closing it on our end.");
+					try
+					{
+						currentSocket.close();
+					}
+					catch (Exception e)
+					{
+						s_logger.error("Exception closing disconnected socket: ", e);
+					}
+				}
 				if (currentSocket != null && currentSocket.isClosed() == false)
 				{
 					m_socketQueue.add(currentSocket);
