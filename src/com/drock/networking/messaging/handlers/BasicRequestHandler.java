@@ -22,7 +22,11 @@ public abstract class BasicRequestHandler<T extends NetworkRequestMessage, T2 ex
 		{
 			T message = m_messageClass.newInstance();
 			message.deserializeFromWrapperMessage(wrapper);
-			return handleMessage(message).serializeToWrapperMessage();
+			T2 response = handleMessage(message);
+			
+			if (response == null)
+				return null;
+			return response.serializeToWrapperMessage();
 		}
 		catch (Exception e)
 		{

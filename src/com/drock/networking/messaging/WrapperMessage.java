@@ -33,11 +33,12 @@ public class WrapperMessage
 	{
 		byte[] payloadBytes = payload.getBytes();
 		
-		ByteBuffer buffer = ByteBuffer.allocate(7 + payloadBytes.length);
+		ByteBuffer buffer = ByteBuffer.allocate(8 + payloadBytes.length);
 		buffer.put(version);
 		buffer.putShort(messageType);
 		buffer.putInt(userID);
 		buffer.put(payloadBytes);
+		buffer.put((byte)0);
 		
 		return buffer.array();
 	}

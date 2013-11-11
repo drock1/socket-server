@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.log4j.Logger;
 
 import com.drock.networking.messaging.MessageHandlingSystem;
+import com.drock.networking.messaging.WrapperMessage;
 import com.drock.networking.socket.listener.SocketListenerThread;
 import com.drock.networking.socket.worker.SocketWorkerThread;
 
@@ -66,6 +67,8 @@ public class SocketServer
 			t.start();
 			m_workerThreadPool.add(t);
 		}
+		
+		s_logger.debug("Socket server has started up on port: " + port);
 	}
 	
 	public boolean isAlive()
@@ -151,16 +154,40 @@ public class SocketServer
 											   Integer.parseInt(serverProps.getProperty("listeners")),
 											   Integer.parseInt(serverProps.getProperty("workers")));
 		
+		
+		//Setup some client test stuff
+		WrapperMessage testMessage = new WrapperMessage();
+		testMessage.version = 1;
+		testMessage.messageType = 1;
+		testMessage.userID = 255;
+		testMessage.payload = "This is a test payload";
+		
+		Socket testClient = null;
+		try
+		{
+			testClient = new Socket("localhost", Integer.parseInt(serverProps.getProperty("port")));
+		}
+		catch (Exception e)
+		{
+			s_logger.error("Error trying to open test client connection: ", e);
+			testClient = null;
+		}
 		while (server.isAlive())
 		{
 			//TODO: Some sort of shutdown conditionals
 			try
 			{
-				Thread.sleep(1000);
+				testClient.getOutputStream().write(testMessage.serializeToBytes());
+				testClient.getOutputStream().flush();
+				Thread.sleep(10000);
 			}
 			catch (InterruptedException e)
 			{
 				s_logger.warn("Main thread interrupted:", e);
+			} 
+			catch (IOException e) 
+			{
+				s_logger.warn("Test client had some issues: ", e);
 			}
 		}
 	}

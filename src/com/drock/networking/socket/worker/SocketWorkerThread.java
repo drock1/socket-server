@@ -57,11 +57,21 @@ public class SocketWorkerThread extends Thread
 				if (socketInput.available() > 0)
 				{
 					ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-					byte buffer[] = new byte[1024];
-					
-					for(int read; (read = socketInput.read(buffer)) != -1;)
+
+					while(true) //Broken by a '0' byte or a client socket termination
 					{
-					  	byteStream.write(buffer, 0, read);
+						int lastByte = socketInput.read();
+						
+						if (lastByte == -1) //Reading client close
+						{
+							currentSocket.close();
+							break;
+						}
+						
+						if (byteStream.size() >= 7 && lastByte == 0) //Reading a '\0' in the ASCII part
+							break;
+						
+						byteStream.write(lastByte);
 					}
 					
 					ByteBuffer rawData = ByteBuffer.wrap(byteStream.toByteArray());
