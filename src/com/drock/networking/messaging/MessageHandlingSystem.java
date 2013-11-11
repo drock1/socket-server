@@ -4,14 +4,13 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import com.drock.networking.messaging.handlers.BasicRequestHandler;
 
 public class MessageHandlingSystem
 {
-	static Logger s_logger = LogManager.getLogger(MessageHandlingSystem.class);
+	static Logger s_logger = Logger.getLogger(MessageHandlingSystem.class);
 	
 	private Map<Short, BasicRequestHandler<? extends NetworkRequestMessage,? extends NetworkRequestMessage>> m_handlers;
 	

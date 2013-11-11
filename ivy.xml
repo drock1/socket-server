@@ -9,8 +9,7 @@
 	<dependencies>
 	
 		<!-- Logging -->
-  		<dependency org="org.apache.logging.log4j" name="log4j-api" rev="2.0-beta9" transitive="false" conf="*->default"/> 
-		<dependency org="org.apache.logging.log4j" name="log4j-core" rev="2.0-beta9" transitive="false" conf="*->default"/>  
+		<dependency org="log4j"                name="log4j"                 rev="1.2.+" transitive="false" conf="*->default"/>
 		
 		<exclude org="*" ext="*" type="source" />
 		<exclude org="*" ext="*" type="javadoc" />

@@ -1,7 +1,6 @@
 package com.drock.networking.messaging.handlers;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import com.drock.networking.messaging.NetworkRequestMessage;
 import com.drock.networking.messaging.NetworkResponseMessage;
@@ -9,7 +8,7 @@ import com.drock.networking.messaging.WrapperMessage;
 
 public abstract class BasicRequestHandler<T extends NetworkRequestMessage, T2 extends NetworkResponseMessage>
 {
-	static Logger s_logger = LogManager.getLogger(BasicRequestHandler.class);
+	static Logger s_logger = Logger.getLogger(BasicRequestHandler.class);
 	
 	Class<T> m_messageClass;
 	public BasicRequestHandler(Class<T> messageClass)

@@ -6,15 +6,14 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import com.drock.networking.messaging.MessageHandlingSystem;
 import com.drock.networking.messaging.WrapperMessage;
 
-public class SocketWorkerThread implements Runnable 
+public class SocketWorkerThread extends Thread
 {
-	static Logger s_logger = LogManager.getLogger(SocketWorkerThread.class);
+	static Logger s_logger = Logger.getLogger(SocketWorkerThread.class);
 	
 	private ConcurrentLinkedQueue<Socket> m_socketQueue;
 	private MessageHandlingSystem m_handlers;
@@ -28,6 +27,7 @@ public class SocketWorkerThread implements Runnable
 	{
 		m_socketQueue = queue;
 		m_handlers = messageHandlingSystem;
+		m_alive = true;
 	}
 	
 	@Override
@@ -35,7 +35,7 @@ public class SocketWorkerThread implements Runnable
 	{
 		while (m_alive)
 		{
-			if (m_socketQueue.isEmpty())
+			while (m_socketQueue.isEmpty())
 			{
 				try 
 				{
@@ -48,6 +48,9 @@ public class SocketWorkerThread implements Runnable
 			}
 			
 			Socket currentSocket = m_socketQueue.poll();
+			if (currentSocket == null)
+				continue;
+			
 			try
 			{
 				InputStream socketInput = currentSocket.getInputStream();

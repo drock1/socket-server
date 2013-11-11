@@ -1,19 +1,18 @@
-package com.drock.networking.socket;
+package com.drock.networking.socket.listener;
 
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * The socket listener listens for connections on a specified socket and spits
  * connections into a queue for workers to pickup.
  */
-public class SocketListenerThread implements Runnable
+public class SocketListenerThread extends Thread
 {
-	static Logger s_logger = LogManager.getLogger(SocketListenerThread.class);
+	static Logger s_logger = Logger.getLogger(SocketListenerThread.class);
 	
 	private ServerSocket m_socket;
 	private ConcurrentLinkedQueue<Socket> m_queue;
@@ -42,7 +41,10 @@ public class SocketListenerThread implements Runnable
 			{
 				newConnection = m_socket.accept();
 				if (newConnection.isConnected())
+				{
+					s_logger.debug("Accepted socket connection");
 					m_queue.add(newConnection);
+				}
 			}
 			catch (Exception e)
 			{
